@@ -9,6 +9,13 @@ if (type) return res.status(type).json({ message });
 return res.status(201).json({ token: message });
 };
 
+const getAllUsers = async (_req, res) => {
+const { type, message } = await userService.getAll();
+
+return res.status(type).json(message);
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };
