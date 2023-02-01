@@ -2,21 +2,21 @@ const { User } = require('../models');
 const { generateToken } = require('../utils/JWT');
 const validate = require('./validations/validationsInputValues');
 
-const create = async (req, res) => {
-  const error = validate.validateUser(req.body);
+const create = async (body) => {
+  const error = validate.validateUser(body);
 
-  if (error) return res.status(400).json({ message: error });
+  if (error) return { type: 400, message: error };
 
-  const { displayName, email, password, image } = req.body;
+  const { displayName, email, password, image } = body;
   const userExists = await User.findOne({ where: { email, password } });
 
-  if (userExists) return res.status(409).json({ message: 'User already registered' });
+  if (userExists) return { type: 409, message: 'User already registered' };
 
-  const user = await User.create({ displayName, email, password, image });
+  await User.create({ displayName, email, password, image });
 
-  const token = generateToken({ data: user });
+  const token = generateToken(body);
 
-  return res.status(201).json({ token });
+  return { type: null, message: token };
 };
 
 module.exports = {
