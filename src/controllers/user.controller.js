@@ -20,7 +20,9 @@ const { id } = req.params;
 
 const { type, message } = await userService.getById(id);
 
-return res.status(type).json(message);
+if (type !== 200) return res.status(404).json({ message });
+
+return res.status(200).json(message);
 };
 
 module.exports = {
