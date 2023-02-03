@@ -5,9 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
       references: {
-        model: 'BlogPosts',
+        model: 'blog_posts',
         key: 'id',
     },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   },
     categoryId: {
       type: DataTypes.INTEGER,
@@ -17,8 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Categories',
         key: 'id',
       },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
-  }, { timestamps: false, underscored: true });
+  }, { timestamps: false, underscored: true, tableName: 'posts_categories' });
 
   PostCategory.associate = ({ BlogPost, Category }) => {
     BlogPost.belongsToMany(Category, {
